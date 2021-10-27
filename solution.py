@@ -29,6 +29,13 @@ def rightrotate32(x, n):
     left_part = (x << (32 - n)) % (2 ** 32)
     return left_part | right_part
 
+def little_sigma0(x):
+    return rightrotate32(x, 7) ^ rightrotate32(x, 18) ^ (x >> 3)
+
+def little_sigma1(x):
+    return rightrotate32(x, 17) ^ rightrotate32(x, 19) ^ (x >> 10)
+
+
 # Problem 1
 p1_input = inputs["problem1"]
 p1_array = []
@@ -46,6 +53,15 @@ for x in p2_input:
     p2_array.append(val)
 outputs["problem2"] = p2_array
 
+# Problem 3
+p3_input = inputs["problem3"]
+lilSigma3=rightrotate32(p3_input, 7) ^ rightrotate32(p3_input, 18) ^ (p3_input >> 3)
+outputs["problem3"] = lilSigma3
+
+# Problem 4
+p4_input = inputs["problem4"]
+lilSigma4=rightrotate32(p4_input, 7) ^ rightrotate32(p4_input, 18) ^ (p4_input >> 3)
+outputs["problem4"] = lilSigma4
 
 
 # Output
