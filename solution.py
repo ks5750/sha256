@@ -17,20 +17,37 @@ import hashlib
 inputs = json.load(sys.stdin)
 outputs = {}
 
-#
-def add32(x,y):
 
-    modVal = (x+y) % 2 ** 32
+#
+def add32(x, y):
+    modVal = (x + y) % 2 ** 32
     return modVal
+
+def rightrotate32(x, n):
+    assert x < 2 ** 32, "x is too large. Did you use + instead of add32 somewhere?"
+    right_part = x >> n
+    left_part = (x << (32 - n)) % (2 ** 32)
+    return left_part | right_part
 
 # Problem 1
 p1_input = inputs["problem1"]
-p1_array=[]
+p1_array = []
 
 for x in p1_input:
-    modVal= add32(x[0],x[1])
+    modVal = add32(x[0], x[1])
     p1_array.append(modVal)
-outputs["problem1"]=p1_array
+outputs["problem1"] = p1_array
+
+# Problem 2
+p2_input = inputs["problem2"]
+p2_array = []
+for x in p2_input:
+    val = rightrotate32(x[0], x[1])
+    p2_array.append(val)
+outputs["problem2"] = p2_array
+
+
+
 # Output
 #
 # In the video I wrote something more like `json.dump(outputs, sys.stdout)`.
