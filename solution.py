@@ -12,9 +12,9 @@ import secrets
 import hashlib
 
 #
-# with open(sys.argv[1]) as json_data:
-#   inputs = json.load(json_data)
-inputs = json.load(sys.stdin)
+with open(sys.argv[1]) as json_data:
+  inputs = json.load(json_data)
+# inputs = json.load(sys.stdin)
 outputs = {}
 
 
@@ -55,12 +55,12 @@ outputs["problem2"] = p2_array
 
 # Problem 3
 p3_input = inputs["problem3"]
-lilSigma3=rightrotate32(p3_input, 7) ^ rightrotate32(p3_input, 18) ^ (p3_input >> 3)
+lilSigma3=little_sigma0(p3_input)
 outputs["problem3"] = lilSigma3
 
 # Problem 4
 p4_input = inputs["problem4"]
-lilSigma4=rightrotate32(p4_input, 7) ^ rightrotate32(p4_input, 18) ^ (p4_input >> 3)
+lilSigma4=little_sigma1(p4_input)
 outputs["problem4"] = lilSigma4
 
 
