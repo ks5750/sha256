@@ -100,6 +100,13 @@ outputs["problem7"] =big_sigma1(p7_input)
 
 
 
+# Problem 8
+p8_input = inputs["problem8"]
+print(p8_input)
+outputs["problem8"] =choice(p8_input[0],p8_input[1],p8_input[2])
+
+
+
 # Output
 #
 # In the video I wrote something more like `json.dump(outputs, sys.stdout)`.
