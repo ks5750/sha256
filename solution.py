@@ -86,30 +86,6 @@ lilSigma4=little_sigma1(p4_input)
 outputs["problem4"] = lilSigma4
 
 
-# Problem 5
-p5_input = inputs["problem5"]
-outputs["problem5"] =message_schedule(p5_input)
-
-# Problem 6
-p6_input = inputs["problem6"]
-outputs["problem6"] =big_sigma0(p6_input)
-
-# Problem 7
-p7_input = inputs["problem7"]
-outputs["problem7"] =big_sigma1(p7_input)
-
-
-
-# Problem 8
-p8_input = inputs["problem8"]
-print(p8_input)
-outputs["problem8"] =choice(p8_input[0],p8_input[1],p8_input[2])
-
-# Problem 9
-p9_input = inputs["problem9"]
-print(p9_input)
-outputs["problem9"] =majority(p9_input[0],p9_input[1],p9_input[2])
-
 
 # Output
 #
