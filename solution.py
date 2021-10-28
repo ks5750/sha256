@@ -13,7 +13,7 @@ import hashlib
 
 
 # with open(sys.argv[1]) as json_data:
-  # inputs = json.load(json_data)
+#   inputs = json.load(json_data)
 inputs = json.load(sys.stdin)
 outputs = {}
 
@@ -35,6 +35,28 @@ def little_sigma0(x):
 def little_sigma1(x):
     return rightrotate32(x, 17) ^ rightrotate32(x, 19) ^ (x >> 10)
 
+def message_schedule(block):
+    p5_inputWords=[]
+    for x in range(0, len(block), 4):
+        p5_inputWords.append(int.from_bytes(block[x:x + 4].encode(), "big"))
+
+    for y in range(16, len(block)):
+        p5_inputWords.append(add32(add32(p5_inputWords[y-16] ,little_sigma0(p5_inputWords[y-15])),
+                                   add32(p5_inputWords[y-7] ,little_sigma1(p5_inputWords[y-2]))))
+
+    return p5_inputWords
+
+def big_sigma0(x):
+    return rightrotate32(x, 2) ^ rightrotate32(x, 13) ^ rightrotate32(x, 22)
+
+def big_sigma1(x):
+    return rightrotate32(x, 6) ^ rightrotate32(x, 11) ^ rightrotate32(x, 25)
+
+def choice(x,y,z):
+    return (x & y) ^ (~x & z)
+
+def majority(x,y,z):
+    return (x & y) ^ (x & z) ^ (y & z)
 
 # Problem 1
 p1_input = inputs["problem1"]
@@ -63,19 +85,31 @@ p4_input = inputs["problem4"]
 lilSigma4=little_sigma1(p4_input)
 outputs["problem4"] = lilSigma4
 
-def message_schedule(block):
-    p5_inputWords=[]
-    for x in range(0, len(block), 4):
-        p5_inputWords.append(int.from_bytes(block[x:x + 4].encode(), "big"))
-
-    for y in range(16, len(block)):
-        p5_inputWords.append(add32(add32(p5_inputWords[y-16] ,little_sigma0(p5_inputWords[y-15])),add32(p5_inputWords[y-7] ,little_sigma1(p5_inputWords[y-2]))))
-
-    return p5_inputWords
 
 # Problem 5
 p5_input = inputs["problem5"]
 outputs["problem5"] =message_schedule(p5_input)
+
+# Problem 6
+p6_input = inputs["problem6"]
+outputs["problem6"] =big_sigma0(p6_input)
+
+# Problem 7
+p7_input = inputs["problem7"]
+outputs["problem7"] =big_sigma1(p7_input)
+
+
+
+# Problem 8
+p8_input = inputs["problem8"]
+print(p8_input)
+outputs["problem8"] =choice(p8_input[0],p8_input[1],p8_input[2])
+
+# Problem 9
+p9_input = inputs["problem9"]
+print(p9_input)
+outputs["problem9"] =majority(p9_input[0],p9_input[1],p9_input[2])
+
 
 # Output
 #
