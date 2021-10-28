@@ -11,9 +11,9 @@ import json
 import secrets
 import hashlib
 
-#
+
 # with open(sys.argv[1]) as json_data:
-#   inputs = json.load(json_data)
+  # inputs = json.load(json_data)
 inputs = json.load(sys.stdin)
 outputs = {}
 
@@ -63,6 +63,19 @@ p4_input = inputs["problem4"]
 lilSigma4=little_sigma1(p4_input)
 outputs["problem4"] = lilSigma4
 
+def message_schedule(block):
+    p5_inputWords=[]
+    for x in range(0, len(block), 4):
+        p5_inputWords.append(int.from_bytes(block[x:x + 4].encode(), "big"))
+
+    for y in range(16, len(block)):
+        p5_inputWords.append(add32(add32(p5_inputWords[y-16] ,little_sigma0(p5_inputWords[y-15])),add32(p5_inputWords[y-7] ,little_sigma1(p5_inputWords[y-2]))))
+
+    return p5_inputWords
+
+# Problem 5
+p5_input = inputs["problem5"]
+outputs["problem5"] =message_schedule(p5_input)
 
 # Output
 #
