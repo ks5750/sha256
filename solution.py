@@ -102,9 +102,11 @@ outputs["problem7"] =big_sigma1(p7_input)
 
 # Problem 8
 p8_input = inputs["problem8"]
-print(p8_input)
 outputs["problem8"] =choice(p8_input[0],p8_input[1],p8_input[2])
 
+# Problem 9
+p9_input = inputs["problem9"]
+outputs["problem9"] =majority(p9_input[0],p9_input[1],p9_input[2])
 
 
 # Output
