@@ -12,9 +12,9 @@ import secrets
 import hashlib
 
 
-# with open(sys.argv[1]) as json_data:
-#   inputs = json.load(json_data)
-inputs = json.load(sys.stdin)
+with open(sys.argv[1]) as json_data:
+  inputs = json.load(json_data)
+# inputs = json.load(sys.stdin)
 outputs = {}
 
 
@@ -57,6 +57,24 @@ def choice(x,y,z):
 
 def majority(x,y,z):
     return (x & y) ^ (x & z) ^ (y & z)
+
+def round(state, round_constant, schedule_word):
+
+    ch = choice(state[4], state[5], state[6])
+    temp1 = add32( add32( add32(state[7] , big_sigma1(state[4])), add32(ch, round_constant)), schedule_word)
+    maj = majority(state[0], state[1], state[2])
+    temp2 = add32(big_sigma0(state[0]) , maj)
+
+    new_state=[add32(temp1 ,temp2),state[0],
+    state[1],
+    state[2],
+    add32( state[3] , temp1),
+    state[4],
+    state[5],
+    state[6],
+    ]
+    return new_state
+
 
 # Problem 1
 p1_input = inputs["problem1"]
@@ -107,6 +125,15 @@ outputs["problem8"] =choice(p8_input[0],p8_input[1],p8_input[2])
 # Problem 9
 p9_input = inputs["problem9"]
 outputs["problem9"] =majority(p9_input[0],p9_input[1],p9_input[2])
+
+# Problem 10
+p10_input = inputs["problem10"]
+
+state=p10_input["state"]
+round_constant=p10_input["round_constant"]
+schedule_word=p10_input["schedule_word"]
+print(state,round_constant,schedule_word)
+outputs["problem10"] =round(state,round_constant,schedule_word)
 
 
 # Output
