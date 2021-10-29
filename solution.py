@@ -12,9 +12,9 @@ import secrets
 import hashlib
 
 
-with open(sys.argv[1]) as json_data:
-  inputs = json.load(json_data)
-# inputs = json.load(sys.stdin)
+# with open(sys.argv[1]) as json_data:
+#   inputs = json.load(json_data)
+inputs = json.load(sys.stdin)
 outputs = {}
 
 
@@ -132,7 +132,6 @@ p10_input = inputs["problem10"]
 state=p10_input["state"]
 round_constant=p10_input["round_constant"]
 schedule_word=p10_input["schedule_word"]
-print(state,round_constant,schedule_word)
 outputs["problem10"] =round(state,round_constant,schedule_word)
 
 
