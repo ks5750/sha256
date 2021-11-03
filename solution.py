@@ -11,7 +11,7 @@ import json
 import secrets
 import hashlib
 
-#
+# #
 # with open(sys.argv[1]) as json_data:
 #   inputs = json.load(json_data)
 inputs = json.load(sys.stdin)
@@ -103,6 +103,21 @@ def compress(input_state, block):
 
 
     return state
+
+IV = [
+    0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
+    0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19,
+]
+def padding(message_length):
+    remainder_bytes = (message_length + 8) % 64  # number of bytes in the final block, including the appended length
+    filler_bytes = 64 - remainder_bytes  # number of bytes we need to add, including the initial 0x80 byte
+    zero_bytes = filler_bytes - 1  # number of 0x00 bytes we need to add
+
+    pad_byteString= '80'
+    finalString=pad_byteString + zero_bytes*"00" + str((8 * message_length).to_bytes(8, "big").hex())
+
+    return finalString
+
 # Problem 1
 p1_input = inputs["problem1"]
 p1_array = []
@@ -167,6 +182,13 @@ p11_input = inputs["problem11"]
 state=p11_input["state"]
 block=p11_input["block"]
 outputs["problem11"] =compress (state,block)
+
+# Problem 12
+p12_input = inputs["problem12"]
+p12_output=[]
+for x in p12_input:
+    p12_output.append(padding(x))
+outputs["problem12"] =p12_output
 
 # Output
 #
