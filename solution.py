@@ -44,6 +44,7 @@ def little_sigma0(x):
 def little_sigma1(x):
     return rightrotate32(x, 17) ^ rightrotate32(x, 19) ^ (x >> 10)
 
+
 def message_schedule(block):
     p5_inputWords=[]
     for x in range(0, len(block), 4):
@@ -118,6 +119,25 @@ def padding(message_length):
 
     return finalString
 
+
+def sha256(message):
+
+    padd =padding(len(message))
+    padMessage=bytes(message,'utf-8')+bytes.fromhex(padd)
+    state =IV
+    shaFinal=""
+    for i in range(0, len(padMessage),64):
+        # print(padMessage[i:i+64].hex())
+        block=padMessage[i:i+64].hex()
+        state=compress(state,block)
+    # print("state-->",state)
+
+    for i in state:
+       shaFinal =shaFinal+i.to_bytes(4, "big").hex()
+
+    return shaFinal
+
+
 # Problem 1
 p1_input = inputs["problem1"]
 p1_array = []
@@ -189,6 +209,15 @@ p12_output=[]
 for x in p12_input:
     p12_output.append(padding(x))
 outputs["problem12"] =p12_output
+
+
+# Problem 13
+p13_input = inputs["problem13"]
+p13_output=[]
+for x in p13_input:
+    p13_output.append(sha256(x))
+outputs["problem13"] =p13_output
+
 
 # Output
 #
