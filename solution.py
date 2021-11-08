@@ -226,7 +226,7 @@ outputs["problem13"] =p13_output
 p14_input = inputs["problem14"]
 original_input = p14_input["original_input"].encode().hex()
 chosen_suffix = p14_input["chosen_suffix"].encode().hex()
-padd14=padding(len(original_input))
+padd14=padding(55)
 final=original_input+padd14+chosen_suffix
 outputs["problem14"] =final
 
