@@ -13,7 +13,7 @@ import hashlib
 
 # #
 # with open(sys.argv[1]) as json_data:
-#   inputs = json.load(json_data)
+#     inputs = json.load(json_data)
 inputs = json.load(sys.stdin)
 outputs = {}
 
@@ -46,9 +46,10 @@ def little_sigma1(x):
 
 
 def message_schedule(block):
+    assert len(block) == 64
     p5_inputWords=[]
     for x in range(0, len(block), 4):
-        p5_inputWords.append(int.from_bytes(block[x:x + 4].encode(), "big"))
+        p5_inputWords.append(int.from_bytes(block[x:x + 4], "big"))
 
     for y in range(16, len(block)):
         p5_inputWords.append(add32(add32(p5_inputWords[y-16] ,little_sigma0(p5_inputWords[y-15])),
@@ -86,6 +87,7 @@ def round(state, round_constant, schedule_word):
     return new_state
 
 def compress(input_state, block):
+    assert len(block) == 64
     W = message_schedule(block)
     state = input_state
     for i in range(0,64):
@@ -123,12 +125,13 @@ def padding(message_length):
 def sha256(message):
 
     padd =padding(len(message))
+    # padMessage=bytes.fromhex(padd)+bytes(message,'utf-8')
     padMessage=bytes(message,'utf-8')+bytes.fromhex(padd)
     state =IV
     shaFinal=""
     for i in range(0, len(padMessage),64):
         # print(padMessage[i:i+64].hex())
-        block=padMessage[i:i+64].hex()
+        block=padMessage[i:i+64]
         state=compress(state,block)
     # print("state-->",state)
 
@@ -168,7 +171,7 @@ outputs["problem4"] = lilSigma4
 
 # Problem 5
 p5_input = inputs["problem5"]
-outputs["problem5"] =message_schedule(p5_input)
+outputs["problem5"] =message_schedule(p5_input.encode())
 
 # Problem 6
 p6_input = inputs["problem6"]
@@ -201,7 +204,7 @@ p11_input = inputs["problem11"]
 
 state=p11_input["state"]
 block=p11_input["block"]
-outputs["problem11"] =compress (state,block)
+outputs["problem11"] =compress (state,block.encode())
 
 # Problem 12
 p12_input = inputs["problem12"]
@@ -213,6 +216,18 @@ outputs["problem12"] =p12_output
 
 # Problem 13
 p13_input = inputs["problem13"]
+p13_output=[]
+for x in p13_input:
+    p13_output.append(sha256(x))
+outputs["problem13"] =p13_output
+
+
+# Problem 14
+p14_input = inputs["problem14"]
+original_input=p14_input["original_input"].encode()
+chosen_suffix=p14_input["chosen_suffix"].encode()
+
+
 p13_output=[]
 for x in p13_input:
     p13_output.append(sha256(x))
