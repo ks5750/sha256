@@ -231,6 +231,13 @@ padd14=padding(len(original_in))
 final=original_input+padd14+chosen_suffix
 outputs["problem14"] =final
 
+
+# Problem 15
+p15_input = bytes.fromhex(inputs["problem15"])
+final15=[]
+for i in range(0, len(p15_input),4):
+    final15.append(int.from_bytes(p15_input[i:i+4], "big"))
+outputs["problem15"] =final15
 # Output
 #
 # In the video I wrote something more like `json.dump(outputs, sys.stdout)`.
