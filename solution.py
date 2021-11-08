@@ -12,9 +12,9 @@ import secrets
 import hashlib
 
 # #
-# with open(sys.argv[1]) as json_data:
-#     inputs = json.load(json_data)
-inputs = json.load(sys.stdin)
+with open(sys.argv[1]) as json_data:
+    inputs = json.load(json_data)
+# inputs = json.load(sys.stdin)
 outputs = {}
 
 ROUND_CONSTANTS = [
@@ -224,15 +224,20 @@ outputs["problem13"] =p13_output
 
 # Problem 14
 p14_input = inputs["problem14"]
-original_input=p14_input["original_input"].encode()
-chosen_suffix=p14_input["chosen_suffix"].encode()
+original_input = p14_input["original_input"]
+chosen_suffix = p14_input["chosen_suffix"]
 
+padd14=padding(len(original_input))
 
-p13_output=[]
-for x in p13_input:
-    p13_output.append(sha256(x))
-outputs["problem13"] =p13_output
+first=sha256(original_input)
+last=sha256(chosen_suffix)
 
+print("padd-->",padd14)
+print("first-->",first)
+print("last-->",last)
+
+final=first+padd14+last
+print("final-->",final)
 
 # Output
 #
