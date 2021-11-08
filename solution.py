@@ -244,6 +244,7 @@ outputs["problem15"] =final15
 p16_input = inputs["problem16"]
 original_hash=bytes.fromhex(p16_input["original_hash"])
 original_len=p16_input["original_len"]
+resultBlock=[]
 stateWords=[]
 chosen_suffix=bytes(p16_input["chosen_suffix"],'ASCII')
 
@@ -254,12 +255,19 @@ pad_original=padding(original_len)
 syntheticMesg= original_len+len(pad_original)+len(p16_input["chosen_suffix"].encode())
 
 newPadding=padding(syntheticMesg)
-paddedSuffix=chosen_suffix+newPadding.encode()
 
-# for i in range(paddedSuffix):
-#     compress()
+paddedSuffix = chosen_suffix+ bytes.fromhex(newPadding)
 
-print("syntheticMesg lentgh ",syntheticMesg)
+print("paddedSuffix size", len(paddedSuffix))
+
+for i in range(0, len(paddedSuffix), 64):
+    # print(padMessage[i:i+64].hex())
+    state=stateWords
+    block = paddedSuffix[i:i + 64]
+    resultBlock.append(compress(state, block))
+    print("resultBlock ", resultBlock)
+
+print("resultBlock ",resultBlock)
 
 # Output
 #
