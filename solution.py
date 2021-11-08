@@ -13,7 +13,7 @@ import hashlib
 
 # #
 # with open(sys.argv[1]) as json_data:
-    # inputs = json.load(json_data)
+#     inputs = json.load(json_data)
 inputs = json.load(sys.stdin)
 outputs = {}
 
