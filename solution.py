@@ -12,9 +12,9 @@ import secrets
 import hashlib
 
 # #
-# with open(sys.argv[1]) as json_data:
-#     inputs = json.load(json_data)
-inputs = json.load(sys.stdin)
+with open(sys.argv[1]) as json_data:
+    inputs = json.load(json_data)
+# inputs = json.load(sys.stdin)
 outputs = {}
 
 ROUND_CONSTANTS = [
@@ -238,9 +238,32 @@ final15=[]
 for i in range(0, len(p15_input),4):
     final15.append(int.from_bytes(p15_input[i:i+4], "big"))
 outputs["problem15"] =final15
+
+
+# Problem 16
+p16_input = inputs["problem16"]
+original_hash=bytes.fromhex(p16_input["original_hash"])
+original_len=p16_input["original_len"]
+stateWords=[]
+chosen_suffix=bytes(p16_input["chosen_suffix"],'ASCII')
+
+for i in range(0, len(original_hash),4):
+    stateWords.append(int.from_bytes(original_hash[i:i+4], "big"))
+
+pad_original=padding(original_len)
+syntheticMesg= original_len+len(pad_original)+len(p16_input["chosen_suffix"].encode())
+
+newPadding=padding(syntheticMesg)
+paddedSuffix=chosen_suffix+newPadding.encode()
+
+# for i in range(paddedSuffix):
+#     compress()
+
+print("syntheticMesg lentgh ",syntheticMesg)
+
 # Output
 #
 # In the video I wrote something more like `json.dump(outputs, sys.stdout)`.
 # Either way works. This way adds some indentation and a trailing newline,
 # which makes things look nicer in the terminal.
-print(json.dumps(outputs, indent="  "))
+# print(json.dumps(outputs, indent="  "))
