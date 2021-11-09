@@ -12,9 +12,9 @@ import secrets
 import hashlib
 
 # #
-with open(sys.argv[1]) as json_data:
-    inputs = json.load(json_data)
-# inputs = json.load(sys.stdin)
+# with open(sys.argv[1]) as json_data:
+#     inputs = json.load(json_data)
+inputs = json.load(sys.stdin)
 outputs = {}
 
 ROUND_CONSTANTS = [
@@ -251,27 +251,29 @@ chosen_suffix=bytes(p16_input["chosen_suffix"],'ASCII')
 for i in range(0, len(original_hash),4):
     stateWords.append(int.from_bytes(original_hash[i:i+4], "big"))
 
-pad_original=padding(original_len)
+# pad_original=padding(original_len)
+pad_original= bytes.fromhex(padding(original_len))
 syntheticMesg= original_len+len(pad_original)+len(p16_input["chosen_suffix"].encode())
 
 newPadding=padding(syntheticMesg)
-
 paddedSuffix = chosen_suffix+ bytes.fromhex(newPadding)
 
-print("paddedSuffix size", len(paddedSuffix))
 
 for i in range(0, len(paddedSuffix), 64):
     # print(padMessage[i:i+64].hex())
     state=stateWords
     block = paddedSuffix[i:i + 64]
-    resultBlock.append(compress(state, block))
-    print("resultBlock ", resultBlock)
+    resultBlock=compress(state, block)
 
-print("resultBlock ",resultBlock)
+shaFinal16=""
+for i in resultBlock:
+    shaFinal16 = shaFinal16 + i.to_bytes(4, "big").hex()
+
+outputs["problem16"] =shaFinal16
 
 # Output
 #
 # In the video I wrote something more like `json.dump(outputs, sys.stdout)`.
 # Either way works. This way adds some indentation and a trailing newline,
 # which makes things look nicer in the terminal.
-# print(json.dumps(outputs, indent="  "))
+print(json.dumps(outputs, indent="  "))
